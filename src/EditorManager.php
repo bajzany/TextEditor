@@ -1,4 +1,3 @@
-
 <?php
 
 /**
@@ -8,7 +7,9 @@
 
 namespace Bajzany\TextEditor;
 
-use Doctrine\Common\EventManager;
+use Bajzany\TextEditor\Exceptions\TextEditorException;
+
+use Chomenko\AppWebLoader\AppWebLoader;
 use Nette\DI\Container;
 
 class EditorManager
@@ -17,44 +18,48 @@ class EditorManager
 	const TAG_TYPE = 'ckEditor';
 
 	/**
-	 * @var EventManager
+	 * @var IType[]
 	 */
-	private $eventManager;
+	private $types = [];
 
-	public function __construct(Container $container)
+	/**
+	 * @var AppWebLoader
+	 */
+	private $appWebLoader;
+
+	public function __construct(Container $container, AppWebLoader $appWebLoader)
 	{
-		$this->eventManager = new EventManager();
+		$builds = $container->findByTag(self::TAG_TYPE);
+		foreach ($builds as $name => $type) {
+			$service = $container->getService($name);
+			if (!$service instanceof IType) {
+				throw TextEditorException::listenerIsNotInstanceIEventSubscriber(get_class($service));
+			}
 
-//		$container->findByTag(self::TAG_TYPE);
+			$this->types[$type] = $service;
+		}
+		$this->appWebLoader = $appWebLoader;
+	}
 
-		// PREDAT DO EVENT MANAGERU
-
-
-//		$this->eventManager->addEventSubscriber();
-
-
-//		if ($this->built) {
-//			return;
-//		}
-//		$installersClass = $configurator->getBundleEvents();
-//		foreach ($installersClass as $class) {
-//			$event = new $class($configurator, $parameters);
-//			if (!$event instanceof EventSubscriber) {
-//				throw BundleException::eventMustByInstance($event);
-//			}
-//			$this->eventManager->addEventSubscriber($event);
-//		}
-//
-//		$this->bundles = $this->loader->getBundles();
-//		foreach ($this->bundles as $bundle) {
-//			$eventArg = new BuildEventArgs($configurator, $bundle, $parameters);
-//			$this->eventManager->dispatchEvent(Events::ON_BUILD, $eventArg);
-//		}
-//		$this->built = TRUE;
-//
+	public function loadAssets()
+	{
+		$collection = $this->appWebLoader->createCollection('ckEditor');
+		$collection->addScript(__DIR__ . '/Asserts/ckeditor.js');
+		$collection->addScript(__DIR__ . '/Asserts/ckEditorRun.js');
+	}
 
 
+	/**
+	 * @return IType[]
+	 */
+	public function getTypes(): array
+	{
+		return $this->types;
+	}
 
+	public function getType(string $type): IType
+	{
+		return $this->types[$type];
 	}
 
 }
