@@ -1,0 +1,34 @@
+{
+  "name": "bajzany/text-editor",
+  "type": "extensions",
+  "description": "Text editor for Nette Framework",
+  "keywords": ["text-editor"],
+  "homepage": "https://github.com/bajzany/TextEditor",
+  "license": [],
+  "authors": [
+    {
+      "name": "Radek Zíka",
+      "homepage": "http://dipcom.cz",
+      "email": "radek.zika@dipcom.cz"
+    }
+  ],
+  "support": {
+    "email": "radek.zika@dipcom.cz",
+    "issues": "https://github.com/bajzany/TextEditor"
+  },
+  "require": {
+    "php": "^7.2",
+    "nette/di": "^2.4",
+    "nette/application": "^2.4",
+    "nette/bootstrap": "^2.4",
+    "latte/latte": "^2.4",
+    "nette/utils": "^2.4",
+    "chomenko/app-webloader": "^1.0",
+    "bajzany/stagejs": "^1.0"
+  },
+  "autoload": {
+    "psr-4": {
+      "Bajzany\\TextEditor\\": "src/"
+    }
+  }
+}
