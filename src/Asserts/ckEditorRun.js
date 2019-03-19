@@ -1,71 +1,72 @@
 (function() {
-	var ckEditor = {};
+
+	if (typeof window.CK_EDITOR_CONFIG === "undefined") {
+		window.CK_EDITOR_CONFIG = {};
+	}
+
+	var ckEditor = {
+		config: window.CK_EDITOR_CONFIG
+	};
+
+	var local = {};
 
 	Stage.addComponent('ckEditor', ckEditor);
-
+	window.CKEDITOR_BASEPATH = '/bower/ck-editor-ultra-pro/';
+	ace.config.set('basePath', '/bower/ace-build/src-min');
 	/**
 	 * @param Stage Stage
+	 * @param el
 	 */
-	ckEditor.onBuild = function (Stage) {
-
-		var editors = $('.ckEditor');
-		var timeout;
+	ckEditor.onBuild = function (Stage, el) {
+		var editors = $(el ? el :document).find('.ckEditor');
 		$.each(editors, function (i, item) {
-			ClassicEditor
-				.create(item, {
-					// toolbar: [ 'heading', '|', 'bold', 'italic', 'link' ]
-				} )
-				.then( editor => {
-					editor.model.document.on( 'change', ( evt, data ) => {
-						clearTimeout(timeout);
-						timeout = setTimeout(function(){
+			var type = item.getAttribute('data-type');
+			var config = local.loadConfig(type);
 
-							var url = item.getAttribute('data-link');
-							var type = item.getAttribute('data-type');
-							var args = item.getAttribute('data-args');
-							var url_string = Stage.validateUrl(url);
-							var UrlObject = new URL(url_string);
-							// UrlObject.searchParams.append('content', editor.getData());
+			//Initial
+			config.initial(ckEditor, item, type);
 
-							// console.log(UrlObject.toString());
-							// return
+			//Configure
+			var editor = CKEDITOR[config.editorType]( item , config.configure());
 
-							new Stage.Ajax({
-								method: 'POST',
-								url: UrlObject.toString(),
-								data: {
-									content: editor.getData(),
-									type: type,
-									args: args,
-								},
-								actionsAfterExecuteSnippets: [
-									function (Ajax) {
-										var AjaxListener = Stage.App.getListener('AjaxListener');
-										$.each(Ajax.executedSnippets, function (name, el) {
-											initializeTextBlocks(Stage.App, el);
-											AjaxListener.init(Stage.App, el)
-										});
-									}
-								],
-							});
-							//
-							// console.log( data );
-							// console.log( url);
-						}, 1000);
-					} );
-				} )
-				.catch( err => {
-					console.error( err.stack );
-				});
-
+			//Bind
+			config.bind(editor, item)
 		})
 	};
+
 
 	/**
 	 * @param Stage Stage
 	 */
 	ckEditor.init = function (Stage) {
-		// console.log('AAAA')
-	}
+	};
+
+	/**
+	 * @param name
+	 */
+	local.loadConfig = function(name) {
+
+		if(typeof ckEditor.config[name + 'Config'] === "undefined"){
+			return {
+				initial: function(){
+
+				},
+				configure: function () {
+					return {};
+				},
+				bind: function () {
+
+				},
+				editorType: 'replace'
+			};
+		}
+
+		return ckEditor.config[name + 'Config']
+	};
+
+
+	Stage.App.addActionAfterExecuteSnippet('ckEditor', function (Ajax) {
+		ckEditor.onBuild();
+	});
 
 })();

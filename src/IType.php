@@ -10,17 +10,27 @@ namespace Bajzany\TextEditor;
 interface IType
 {
 
-	public function saveContent(string $content, array $args = []);
-
 	/**
-	 * @return array
+	 * @param string $content
+	 * @param array $args
+	 * @return mixed
 	 */
-	public function loadConfig(): array;
+	public function saveContent(string $content, array $args = []);
 
 	/**
 	 * @param array $args
 	 * @return string
 	 */
 	public function loadData(array $args = []): string;
+
+	/**
+	 * @return bool
+	 */
+	public function hasPermission(): bool;
+
+	/**
+	 * @return string
+	 */
+	public function getConfigFile(): ?string;
 
 }
