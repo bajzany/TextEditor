@@ -103,4 +103,5 @@
 - In .latte call this new type like this, first parameter is name of type, and last parameter array for  function loadData(array $args = []) and function saveContent(string $content, array $args = [])
 
 
+
 	{control ckEditor, Bundles\TextBlock\Model\CkEditorClassic::BLOCK_NAME, 		['name' => $textBlock->getName()]}
