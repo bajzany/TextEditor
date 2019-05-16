@@ -65,8 +65,6 @@
 	};
 
 
-	Stage.App.addActionAfterExecuteSnippet('ckEditor', function (Ajax) {
-		ckEditor.onBuild();
-	});
+	Stage.App.addActionAfterExecuteSnippet('ckEditor', ckEditor.onBuild);
 
 })();
