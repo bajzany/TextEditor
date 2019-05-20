@@ -80,20 +80,18 @@
         	var textBlockClassicConfig = {
         		editorType: 'replace',
         		initial: function(ckEditor, item, type){
-        			var url = item.getAttribute('data-link');
-        			var args = item.getAttribute('data-args');
-        			.... 
-        			....
-        			ETC. AJAX REQUEST FOR SAVE
-
         		},
         		configure: function(){
         			return {
         				removePlugins : "easyimage, cloudservices",
         			};
         		},
-        		bind: function(editor, item){
-        
+        		bind: function(editor, item, type, CkEditorJs){
+        			var url = item.getAttribute('data-link');
+					var args = item.getAttribute('data-args');
+					.... 
+					....
+					ETC. AJAX REQUEST FOR SAVE
         		},
         	};
         	window.CK_EDITOR_CONFIG.textBlockClassicConfig = textBlockClassicConfig;
@@ -104,4 +102,4 @@
 
 
 
-	{control ckEditor, Bundles\TextBlock\Model\CkEditorClassic::BLOCK_NAME, 		['name' => $textBlock->getName()]}
+	{control ckEditor, Bundles\TextBlock\Model\CkEditorClassic::BLOCK_NAME, ['name' => $textBlock->getName()]}
