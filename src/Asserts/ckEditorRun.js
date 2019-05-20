@@ -30,7 +30,7 @@
 			var editor = CKEDITOR[config.editorType]( item , config.configure());
 
 			//Bind
-			config.bind(editor, item)
+			config.bind(editor, item, type, ckEditor)
 		})
 	};
 
