@@ -22,18 +22,42 @@ class TextEditorControl extends Control
 	 */
 	private $editorManager;
 
+	/**
+	 * @var array
+	 */
+	private $privateParameters = [];
+
+	/**
+	 * @param EditorManager $editorManager
+	 * @param null $name
+	 */
 	public function __construct(EditorManager $editorManager, $name = NULL)
 	{
 		$this->editorManager = $editorManager;
-
 		parent::__construct($name);
 	}
 
-
-	public function render($type, array $args = [])
+	/**
+	 * @param string $name
+	 * @param mixed $value
+	 */
+	public function addPrivateParameter(string $name, $value)
 	{
+		$this->privateParameters[$name] = $value;
+	}
+
+	/**
+	 * @return array
+	 */
+	public function getPrivateParameters()
+	{
+		return $this->privateParameters;
+	}
+
+	public function render($type, array $args = [], array $privateArgs = [])
+	{
+		$privateArgs = array_merge_recursive($privateArgs, $this->privateParameters);
 		$typeObject = $this->editorManager->getType($type);
-		$content = $typeObject->loadData($args);
 
 		$html = Html::el('div', [
 			'data-link' => $this->link('SaveContent!'),
@@ -46,6 +70,8 @@ class TextEditorControl extends Control
 			$html->setAttribute('contenteditable', 'true');
 		}
 
+		$typeObject->onBuildWrapped($html);
+		$content = $typeObject->loadData($args, $privateArgs);
 		$html->setHtml($content);
 		echo $html->render();
 	}
@@ -61,7 +87,7 @@ class TextEditorControl extends Control
 			$this->addNotify('You dont have permission to save content', 'Error', Notification::TYPE_DANGER);
 			return;
 		}
-		$typeObject->saveContent($content, json_decode($args, true));
+		$typeObject->saveContent($content, json_decode($args, TRUE));
 
 		$this->addNotify('Content saved', 'Success', Notification::TYPE_SUCCESS);
 	}

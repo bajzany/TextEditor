@@ -7,6 +7,8 @@
 
 namespace Bajzany\TextEditor;
 
+use Nette\Utils\Html;
+
 interface IType
 {
 
@@ -19,9 +21,16 @@ interface IType
 
 	/**
 	 * @param array $args
+	 * @param array $argsPrivate
 	 * @return string
 	 */
-	public function loadData(array $args = []): string;
+	public function loadData(array $args = [], array $argsPrivate = []): string;
+
+	/**
+	 * @param Html $wrapped
+	 * @return void
+	 */
+	public function onBuildWrapped(Html $wrapped): void;
 
 	/**
 	 * @return bool
