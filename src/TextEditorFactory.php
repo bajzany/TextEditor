@@ -7,8 +7,6 @@
 
 namespace Bajzany\TextEditor;
 
-use Chomenko\AppWebLoader\AppWebLoader;
-
 class TextEditorFactory
 {
 
@@ -23,20 +21,13 @@ class TextEditorFactory
 	private $editorManager;
 
 	/**
-	 * @var AppWebLoader
-	 */
-	private $appWebLoader;
-
-	/**
 	 * @param ITextEditorControl $textEditorControl
 	 * @param EditorManager $editorManager
-	 * @param AppWebLoader $appWebLoader
 	 */
-	public function __construct(ITextEditorControl $textEditorControl, EditorManager $editorManager, AppWebLoader $appWebLoader)
+	public function __construct(ITextEditorControl $textEditorControl, EditorManager $editorManager)
 	{
 		$this->textEditorControl = $textEditorControl;
 		$this->editorManager = $editorManager;
-		$this->appWebLoader = $appWebLoader;
 	}
 
 	/**
@@ -55,6 +46,5 @@ class TextEditorFactory
 	{
 		return new TextEditorField($this->editorManager, $label);
 	}
-
 
 }

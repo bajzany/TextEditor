@@ -37,9 +37,4 @@ interface IType
 	 */
 	public function hasPermission(): bool;
 
-	/**
-	 * @return string
-	 */
-	public function getConfigFile(): ?string;
-
 }

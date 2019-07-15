@@ -7,7 +7,6 @@
 
 namespace Bajzany\TextEditor\DI;
 
-use Bajzany\TextEditor\Config;
 use Bajzany\TextEditor\EditorManager;
 use Bajzany\TextEditor\ITextEditorControl;
 use Bajzany\TextEditor\TextEditorFactory;
@@ -18,17 +17,10 @@ use Nette\DI\CompilerExtension;
 
 class TextEditorExtension extends CompilerExtension
 {
+
 	public function loadConfiguration()
 	{
 		$builder = $this->getContainerBuilder();
-
-		$config = [
-			'bowerDir' => $builder->parameters['wwwDir'] . '/bower'
-		];
-		$config = $this->getConfig($config);
-
-		$builder->addDefinition($this->prefix('config'))
-			->setFactory(Config::class, ['data' => $config]);
 
 		$builder->addDefinition($this->prefix('manager'))
 			->setFactory(EditorManager::class)

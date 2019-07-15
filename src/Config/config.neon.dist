@@ -1,6 +1,2 @@
 extensions:
 	textEditor: Bajzany\TextEditor\DI\TextEditorExtension
-
-parameters:
-	textEditor:
-		bowerDir: 'BOWER_DIR' ## for CkEditor directory
