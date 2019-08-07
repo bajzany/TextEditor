@@ -6,7 +6,7 @@ import {App, BaseComponent, SAGA_REDRAW_SNIPPET, Saga} from "Stage"
 import {Wrapped} from './ConfigWrapped';
 import {Config} from './Config';
 
-import CKEDITOR from '@nettpack/ckeditor';
+import * as CKEDITOR from '@nettpack/ckeditor';
 import {Editors} from './EditorsWrapped';
 
 class CkEditorComponent extends BaseComponent {
