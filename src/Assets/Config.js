@@ -11,7 +11,27 @@ export class Config {
 	 * @return {{}}
 	 */
 	configure() {
-		return {};
+		return {
+			toolbar:{
+				items: [
+					'heading',
+					'|',
+					'source',
+					'|',
+					'bold',
+					'italic',
+					'link',
+					'bulletedList',
+					'numberedList',
+					'imageUpload',
+					'blockQuote',
+					'insertTable',
+					'mediaEmbed',
+					'undo',
+					'redo'
+				],
+			},
+		};
 	}
 
 	bind() {
