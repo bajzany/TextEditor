@@ -12,29 +12,12 @@ export class Config {
 	 */
 	configure() {
 		return {
-			toolbar:{
-				items: [
-					'heading',
-					'|',
-					'source',
-					'|',
-					'bold',
-					'italic',
-					'link',
-					'bulletedList',
-					'numberedList',
-					'imageUpload',
-					'blockQuote',
-					'insertTable',
-					'mediaEmbed',
-					'undo',
-					'redo'
-				],
-			},
+			sharedSpaces: {
+			}
 		};
 	}
 
-	bind() {
+	bind(editor, item, type) {
 
 	}
 

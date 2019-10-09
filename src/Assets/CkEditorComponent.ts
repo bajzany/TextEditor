@@ -5,9 +5,8 @@ if (module.hot) {
 import {App, BaseComponent, SAGA_REDRAW_SNIPPET, Saga} from "Stage"
 import {Wrapped} from './ConfigWrapped';
 import {Config} from './Config';
-
-import * as CKEDITOR from '@nettpack/ckeditor';
-import {Editors} from './EditorsWrapped';
+import './oldCkEditor/loader.js'
+import 'ckeditor/ckeditor'
 
 class CkEditorComponent extends BaseComponent {
 
@@ -23,10 +22,14 @@ class CkEditorComponent extends BaseComponent {
 			const {content} = action.payload;
 			target = content
 		}
+		window.CKEDITOR.plugins.addExternal('fontawesome', '/ckeditorExtraPlugins/fontawesome/');
+		window.CKEDITOR.plugins.addExternal('texttransform', '/ckeditorExtraPlugins/texttransform/');
+		window.CKEDITOR.plugins.addExternal('ckeditor-gwf-plugin', '/ckeditorExtraPlugins/ckeditor-gwf-plugin/plugin.js');
+		window.CKEDITOR.plugins.addExternal('lineheight', '/ckeditorExtraPlugins/lineheight/');
+		window.CKEDITOR.plugins.addExternal('fontweight', '/ckeditorExtraPlugins/fontweight/');
+		window.CKEDITOR.plugins.addExternal('text-shadow', '/ckeditorExtraPlugins/text-shadow/');
 
 		let editors = $(target).find('.ckEditor');
-
-		Editors.editors = [];
 
 		$.each(editors, function (i, item) {
 			let type = item.getAttribute('data-type');
@@ -36,28 +39,12 @@ class CkEditorComponent extends BaseComponent {
 				config = Wrapped.getConfigByName(type);
 			}
 			if (config.getEditorType() === 'inline') {
-				CKEDITOR.InlineEditor
-					.create(item, config.configure())
-					.then(editor => {
-						editor.fire( 'inlineReady' );
-						Editors.addEditor(editor);
-						config.bind(editor, item)
-					})
-					.catch( err => {
-						console.error( err.stack );
-					} );
+				const editor = window.CKEDITOR.inline( item, config.configure());
+				$(item).attr('contenteditable', 'true');
+				config.bind(editor, item, type);
 			} else {
-
-				 CKEDITOR.ClassicEditor
-					.create(item, config.configure())
-					.then(editor => {
-						editor.fire( 'classicReady' );
-						Editors.addEditor(editor);
-						config.bind(editor, item)
-					})
-					.catch( err => {
-						console.error( err.stack );
-					} );
+				const editor = window.CKEDITOR.replace( item, config.configure());
+				config.bind(editor, item, type);
 			}
 		})
 	}

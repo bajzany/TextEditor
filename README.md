@@ -72,20 +72,41 @@ export class CoreTextBlockInline extends Config {
 		return 'inline';
 	}
 
-	bind(editor, item) {
-		const url = item.getAttribute('data-link');
-		const args = item.getAttribute('data-args');
-		const url_string = validateUrl(url);
-		const UrlObject = new URL(url_string);
-		const savePlugin = editor.plugins.get( 'Save' );
-		savePlugin.onSave = function (editor) {
-			console.log('onSaveInline', editor)
-		};
+	bind(editor, item, type) {
+		
+		editor.on('focus', function() {$("#ckeoptions").show();});
+		editor.on('blur', function() {$("#ckeoptions").hide();});
+		editor.setKeystroke﻿([
+			[ window.CKEDITOR.CTRL + 83, 'save' ],
+		]);
+        
+		editor.addCommand( 'save',
+			{
+				modes : { wysiwyg:1, source:1 },
+				exec : function( editor ) {
+					const url = item.getAttribute('data-link');
+					const type = item.getAttribute('data-type');
+					const args = item.getAttribute('data-args');
+					const url_string = validateUrl(url);
+					const UrlObject = new URL(url_string);
+					$.ajax({
+						type: 'POST',
+						url: UrlObject.toString(),
+						data: {
+							content: editor.getData(),
+							type: type,
+							args: args,
+						},
+					});
+				}
+			}
+		);
+		editor.ui.addButton( 'Save',{label : 'Uložit',command : 'save'});
 	}
 	configure() {
 		return {
-			customPosition: {
-				targetId: 'ckeoptions'
+			sharedSpaces: {
+				top: 'ckeoptions',
 			}
 		};
 	}

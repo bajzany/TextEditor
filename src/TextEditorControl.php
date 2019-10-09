@@ -67,7 +67,6 @@ class TextEditorControl extends Control
 
 		if ($typeObject->hasPermission()) {
 			$html->setAttribute('class', 'ckEditor');
-			$html->setAttribute('contenteditable', 'true');
 		}
 
 		$typeObject->onBuildWrapped($html);
