@@ -3,10 +3,8 @@ if (module.hot) {
 }
 
 import {App, BaseComponent, SAGA_REDRAW_SNIPPET, Saga} from "Stage"
-import {Wrapped} from './ConfigWrapped';
+import {Wrapped} from './ConfigWrapped.js';
 import {Config} from './Config';
-import './oldCkEditor/loader.js'
-import 'ckeditor/ckeditor'
 
 class CkEditorComponent extends BaseComponent {
 
@@ -22,12 +20,6 @@ class CkEditorComponent extends BaseComponent {
 			const {content} = action.payload;
 			target = content
 		}
-		window.CKEDITOR.plugins.addExternal('fontawesome', '/ckeditorExtraPlugins/fontawesome/');
-		window.CKEDITOR.plugins.addExternal('texttransform', '/ckeditorExtraPlugins/texttransform/');
-		window.CKEDITOR.plugins.addExternal('ckeditor-gwf-plugin', '/ckeditorExtraPlugins/ckeditor-gwf-plugin/plugin.js');
-		window.CKEDITOR.plugins.addExternal('lineheight', '/ckeditorExtraPlugins/lineheight/');
-		window.CKEDITOR.plugins.addExternal('fontweight', '/ckeditorExtraPlugins/fontweight/');
-		window.CKEDITOR.plugins.addExternal('text-shadow', '/ckeditorExtraPlugins/text-shadow/');
 
 		let editors = $(target).find('.ckEditor');
 
