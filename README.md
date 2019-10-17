@@ -1,6 +1,12 @@
 ## Text Editor
 
 
+### How to install
+
+- First you must download ckeditor4
+
+- Now you can add this line in your header html tag `<script src="{$publicPath}/ckeditor/ckeditor.js"></script>`
+
 - Open text-editor/Config/config.neon.dist in vendor dir and paste in into your config directory
 
 - Register TextEditorFactory in Presenter or Control
